@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <form class="flex">
+            <label for="username">Потребителско име:</label>
+            <input type="text" class="field" id="username" name="username" onclick="removeErrors('username', 'usernameInvalid')">
+            <p class="error" id="usernameInvalid">Невалидно потребителско име.</p>
+
+            <label for="name">Име:</label>
+            <input type="text" class="field" id="name" name="name" onclick="removeErrors('name', 'nameInvalid')">
+            <p class="error" id="nameInvalid">Невалидно име.</p>
+
+            <label for="family-name">Фамилия:</label>
+            <input type="text" class="field" id="family-name" name="family-name" onclick="removeErrors('family-name', 'family-nameInvalid')">
+            <p class="error" id="family-nameInvalid">Невалидна фамилия.</p>
+
+            <label for="email">Имейл:</label>
+            <input type="email" class="field" id="email" name="email" onclick="removeErrors('email', 'emailInvalid')">
+            <p class="error" id="emailInvalid">Невалиден имейл.</p>
+
+            <label for="password">Парола:</label>
+            <input type="password" class="field" id="password" name="password" onclick="removeErrors('password', 'passwordInvalid')">
+            <p class="error" id="passwordInvalid">Невалидна парола.</p>
+
+            <label for="street">Улица:</label>
+            <input type="text" class="field" id="street" name="street">
+
+            <label for="city">Град:</label>
+            <input type="text" class="field" id="city" name="city">
+
+            <label for="postal-code">Пощенски код:</label>
+            <input type="text" class="field" id="postal-code" name="postal-code" onclick="removeErrors('postal-code', 'postal-codeInvalid')">
+            <p class="error" id="postal-codeInvalid">Невалиден формат на пощенски код.</p>
+
+            <input type="submit" class="field" id="register-btn" value="Регистрация" onclick="handleRegister();return false">
+            <p class="display-none success" id="successfulRegistration">Успешно се регистрирахте!</p>
+
+        </form> 
+        <script src="js.js"></script>
+    </body>
+</html>

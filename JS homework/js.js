@@ -22,7 +22,7 @@ var cityId = "city";
 
 var postalCodeId = "postal-code";
 
-var successId = "successfulRegistration";
+var successId = "success";
 
 var isUsernameValid = false;
 var isNameValid = false;
@@ -59,6 +59,11 @@ function clearValue(elementId) {
     document.getElementById(elementId).value = "";
 }
 
+function clearValue2(elementId, elementInvalidId) {
+    clearValue(elementId);
+    document.getElementById(elementInvalidId).innerText = "";
+}
+
 async function validateUserInput() {
     await validateUsername(document.getElementById(usernameId));
     validateName(document.getElementById(nameId));
@@ -70,26 +75,26 @@ async function validateUserInput() {
     if (document.getElementById(postalCodeId).value.trim().length !== 0) {
         if (isUsernameValid && isNameValid && isFamilyNameValid && isPasswordValid && isEmailValid && isPostalCodeValid) {
             displaySuccess();
-            clearValue(usernameId);
-            clearValue(nameId);
-            clearValue(familyNameId);
-            clearValue(passwordId);
-            clearValue(emailId);
+            clearValue2(usernameId, usernameInvalidId);
+            clearValue2(nameId, nameInvalidId);
+            clearValue2(familyNameId, familyNameInvalidId);
+            clearValue2(passwordId, passwordInvalidId);
+            clearValue2(emailId, emailInvalidId);
             clearValue(streetId);
             clearValue(cityId);
-            clearValue(postalCodeId);
+            clearValue2(postalCodeId, postalCodeInvalidId);
         }
     } else {
         if (isUsernameValid && isNameValid && isFamilyNameValid && isPasswordValid && isEmailValid) {
             displaySuccess();
-            clearValue(usernameId);
-            clearValue(nameId);
-            clearValue(familyNameId);
-            clearValue(passwordId);
-            clearValue(emailId);
+            clearValue2(usernameId, usernameInvalidId);
+            clearValue2(nameId, nameInvalidId);
+            clearValue2(familyNameId, familyNameInvalidId);
+            clearValue2(passwordId, passwordInvalidId);
+            clearValue2(emailId, emailInvalidId);
             clearValue(streetId);
             clearValue(cityId);
-            clearValue(postalCodeId);
+            clearValue2(postalCodeId, postalCodeInvalidId);
         }
     }
     return;
@@ -112,17 +117,13 @@ async function hasDuplicateUsername() {
 async function validateUsername(username) {
     if (username.value.trim().length === 0 || (username.value.length < 3 || username.value.length > 10)) {
         isUsernameValid = false;
-        document.getElementById(usernameInvalidId).innerHTML = "Невалидно потребителско име."
-        displayError(usernameId, usernameInvalidId);
+        displayError(usernameId, usernameInvalidId, "Невалидно потребителско име.");
         return;
     } 
     let hasDup = await hasDuplicateUsername();
-    console.log("hasdup:" + hasDup);
     if (hasDup) {
         isUsernameValid = false;
-        console.log("ds:");
-        document.getElementById(usernameInvalidId).innerHTML = "Избраното потребителско име вече съществува."
-        displayError(usernameId, usernameInvalidId);
+        displayError(usernameId, usernameInvalidId,"Избраното потребителско име вече съществува.");
         return;
     }
     isUsernameValid = true;
@@ -131,7 +132,7 @@ async function validateUsername(username) {
 function validateName(name) {
     if (name.value.trim().length === 0 || name.value.length > 50) {
         isNameValid = false;
-        displayError(nameId, nameInvalidId)
+        displayError(nameId, nameInvalidId, "Невалидно име.")
     }
     else {
         isNameValid = true;
@@ -141,7 +142,7 @@ function validateName(name) {
 function validateFamilyName(familyName) {
     if (familyName.value.trim().length === 0 || familyName.value.length > 50) {
         isFamilyNameValid = false;
-        displayError(familyNameId, familyNameInvalidId)
+        displayError(familyNameId, familyNameInvalidId, "Невалидно фамилно име.")
     }
     else {
         isFamilyNameValid = true;
@@ -151,7 +152,7 @@ function validateFamilyName(familyName) {
 function validateEmail(email) {
     if (!emailRegex.test(email.value)) {
         isEmailValid = false;
-        displayError(emailId, emailInvalidId)
+        displayError(emailId, emailInvalidId, "Невалиден e-mail.")
     } 
     else {
         isEmailValid = true;
@@ -161,7 +162,7 @@ function validateEmail(email) {
 function validatePassword(password) {
     if (!passwordRegex.test(password.value)) {
         isPasswordValid = false;
-        displayError(passwordId, passwordInvalidId)
+        displayError(passwordId, passwordInvalidId, "Невалидна парола.")
     } 
     else {
         isPasswordValid = true;
@@ -171,17 +172,20 @@ function validatePassword(password) {
 function validatePostalCode(postalCode) {
     if (postalCode.value.trim().length !== 0) {
         if (!postalCodeRegexOnlyNumbers.test(postalCode.value) && !postalCodeRegexNumbersWithDash.test(postalCode.value)) {
-        isPostalCodeValid = false;
-        displayError(postalCodeId, postalCodeInvalidId)
+            isPostalCodeValid = false;
+            displayError(postalCodeId, postalCodeInvalidId, "Невалиден формат на пощенски код.")
         } 
         else {
-        isPostalCodeValid = true;
+            isPostalCodeValid = true;
         }
     }
 }
 
-function displayError(elementId, elementInvalidId) {
-    document.getElementById(elementInvalidId).style.display='block';
+function displayError(elementId, elementInvalidId, errorMessage) {
+    var paragraph = document.getElementById(elementInvalidId);
+    paragraph.style.display='block';
+    paragraph.innerText = errorMessage;
+    
     var element = document.getElementById(elementId);
     element.classList.add("field-invalid");
     element.classList.remove("field");
